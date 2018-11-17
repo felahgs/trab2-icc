@@ -223,10 +223,10 @@ double *preconditioningCg(double *A, double *B, double *M, unsigned int n,
       itTotal = itTotal + (timestamp() - timeIt);
   }
     /*******************************************************************/
-    // LIKWID_MARKER_START("op2");
+    LIKWID_MARKER_START("op2");
 
      double r = calculateNorm(A,B,Xn,n,&timeNorm);
-    // LIKWID_MARKER_STOP("op2");
+    LIKWID_MARKER_STOP("op2");
 
     printOutput(r,timePC,timeNorm,it,itTotal,n,Rx,fp);
     printMat(Xn,1,n,fp);
