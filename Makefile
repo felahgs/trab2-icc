@@ -7,8 +7,8 @@
            CC = gcc -std=c11 -g
          OBJS = $(addsuffix .o,$(MODULOS))
 
-       # LIKWID = /home/soft/likwid
-         LIKWID = /usr/local
+         LIKWID = /home/soft/likwid
+        # LIKWID = /usr/local
  LIKWID_FLAGS = -I$(LIKWID)/include
   LIKWID_LIBS = -L$(LIKWID)/lib
 
