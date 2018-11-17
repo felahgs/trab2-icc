@@ -1,0 +1,6 @@
+Remoção da função que inicializava o vetor resultado X com um array
+de elementos nulos X = generateZeroMatrix(n,1); //x(0) = 0
+    A operação era desnecessário sendo preciso apenas a alocação do 
+    espaço dos elementos.
+    
+Eliminação de subexpreções comuns em diversos loops.
