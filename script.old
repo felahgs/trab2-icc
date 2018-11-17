@@ -110,10 +110,10 @@ for i in "${groups[@]}"
     cg_solver_v1="./ver/0.1_original/cgSolver -i 400 -n $i -k 3 -o output/v1_$i.txt -p .5"
     cg_solver_v2="./cgSolver -i 400 -n $i -k 3 -o output/v2_$i.txt -p .5"
     generate_table L2CACHE "miss rate" $i 6 "$cg_solver_v1" "$cg_solver_v2" 1
-    #generate_table "L3" "L3 bandwidth" $i 6 "$cg_solver_v1" "$cg_solver_v2" 0
-    #generate_table FLOPS_DP "DP MFLOP/s" $i 5 "$cg_solver_v1" "$cg_solver_v2" 0
+    generate_table "L3" "L3 bandwidth" $i 6 "$cg_solver_v1" "$cg_solver_v2" 0
+    generate_table FLOPS_DP "DP MFLOP/s" $i 5 "$cg_solver_v1" "$cg_solver_v2" 0
  done
 
 #   generate_table L2CACHE "L2 miss rate" $i 6
 #   generate_table "L3" "L3 bandwidth" $i 6
-#   generate_table FLOPS_DP "DP MFLOP/s" $i 5   generate_table FLOPS_DP "DP MFLOP/s" $i 5
+#   generate_table FLOPS_DP "DP MFLOP/s" $i 5   generate_table FLOPS_DP "DP MFLOP/s" $i 5:uu

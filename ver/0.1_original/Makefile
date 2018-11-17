@@ -1,27 +1,36 @@
-    CC     = gcc -std=c11 -g
-    CFLAGS = 
-    LFLAGS =
+       PROG   = cgSolver
+    MODULOS   = utils \
+                geraMat \
+                validateEntry
 
-      PROG = cgSolver
-      OBJS = utils.o \
-             geraMat.o \
-             validateEntry.o \
-             $(PROG).o
+           CC = gcc -std=c11 -g
+         OBJS = $(addsuffix .o,$(MODULOS))
 
-.PHONY: limpa faxina clean distclean purge all
+       LIKWID = /home/soft/likwid
+ LIKWID_FLAGS = -I$(LIKWID)/include
+  LIKWID_LIBS = -L$(LIKWID)/lib
 
-%.o: %.c %.h utils.h
-	$(CC) -c $(CFLAGS) $<
+   AVX_FLAGS = -march=native -mavx -O3 -falign-functions=32 -falign-loops=32 -fstrict-aliasing
+   AVX_LOG_FLAGS = -fopt-info-vec -fopt-info-vec-missed 
 
-$(PROG):  $(OBJS)
-	$(CC) -o $@ $^ $(LFLAGS)
-	
-all: $(PROG) doc
-	
-debug: CFLAGS += -d
-	
+       CFLAGS = $(LIKWID_FLAGS) 
+       LFLAGS = $(LIKWID_LIBS) -lm
+
+.PHONY: all clean limpa purge faxina distclean debug avx likwid
+
+%.o: %.c %.h
+	$(CC) $(CFLAGS) -c $<
+
+all: $(PROG)
+
 doc: Doxyfile
 	doxygen $<
+
+debug:         CFLAGS += -DDEBUG
+
+avx:           CFLAGS += $(AVX_FLAGS) $(AVX_LOG_FLAGS)
+avx likwid:    CFLAGS += -DLIKWID_PERFMON
+avx likwid:    LFLAGS += -llikwid
 
 Doxyfile:
 	doxygen -g
@@ -34,10 +43,21 @@ Doxyfile:
 	sed -e "s;SOURCE_BROWSE *= *.*;SOURCE_BROWSE = YES;g" $@ >$@.new
 	sed -e "s;VERBATIM_HEADER *= *.*;VERBATIM_HEADER = YES;g" $@.new >$@
 	rm -f $@.new
-	
-clean:
-	rm -rf *~ *.bak
 
-purge: clean
-	rm -rf Doxyfile html latex
-	rm -f *.o $(PROG)
+likwid avx debug: $(PROG)
+
+$(PROG):  $(PROG).o
+
+$(PROG): $(OBJS) 
+	$(CC) $(CFLAGS) -o $@ $^ $(LFLAGS)
+
+clean:
+	@echo "Limpando ...."
+	@rm -f *~ *.bak *.tmp
+
+purge distclean:   clean
+	@echo "Faxina ...."
+	@rm -f  $(PROG) *.o core a.out
+	@rm -f *.png marker.out *.log
+
+

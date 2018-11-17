@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h> 
 #include <math.h>
+#include <likwid.h>
 
 #include "utils.h"
 #include "geraMat.h"
@@ -592,8 +593,11 @@ double *preconditioningCg(double *A, double *B, double *M, unsigned int n,
       itTotal = itTotal + (timestamp() - timeIt);
   }
     /*******************************************************************/
-    double r = calculateNorm(A,B,Xn,n,&timeNorm);
+   	LIKWID_MARKER_START("op2");
+        double r = calculateNorm(A,B,Xn,n,&timeNorm);
+	LIKWID_MARKER_STOP("op2");
     
+ 
     fprintf(fp, "# Residuo: %.15g \n", r);
     fprintf(fp, "# Tempo PC: %.15g sec \n", (timePC / 1000));
     fprintf(fp, "# Tempo iter: %.15g sec \n", (itTotal/it) / 1000);

@@ -26,14 +26,14 @@ generate_table()
  #echo "$outputv2" | grep "$2" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 | sed -n 3p >> tables/v2-op1_"$1".dat
  #echo "$outputv2" | grep "$2" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 | sed -n 4p >> tables/v2-op2_"$1".dat
 
- echo -ne "$3 " >> tables/v1_op1_"$1".dat
- echo "$outputv1" | grep "$2" | grep -v "AVX" | tr -s ' ' | cut -d ' ' -f $4 | sed -n 1p >> tables/v1_op1_"$1".dat
- echo -ne "$3 " >> tables/v1_op2_"$1".dat
- echo "$outputv1" | grep "$2" | grep -v "AVX" | tr -s ' ' | cut -d ' ' -f $4 | sed -n 2p >> tables/v1_op2_"$1".dat
- echo -ne "$3 " >> tables/v2_op1_"$1".dat
- echo "$outputv2" | grep "$2" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 | sed -n 1p >> tables/v2_op1_"$1".dat
- echo -ne "$3 " >> tables/v2_op2_"$1".dat
- echo "$outputv2" | grep "$2" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 | sed -n 2p >> tables/v2_op2_"$1".dat
+ echo -ne "$3 " >> testes/"$1"/tables/v1_op1_"$1".dat
+ echo "$outputv1" | grep "$8" | grep -v "AVX" | tr -s ' ' | cut -d ' ' -f $4 | sed -n 1p >> testes/"$8"/tables/v1_op1_"$1".dat
+ echo -ne "$3 " >> testes/"$1"/tables/v1_op2_"$1".dat
+ echo "$outputv1" | grep "$8" | grep -v "AVX" | tr -s ' ' | cut -d ' ' -f $4 | sed -n 2p >> testes/"$8"/tables/v1_op2_"$1".dat
+ echo -ne "$3 " >> testes/"$1"/tables/v2_op1_"$1".dat
+ echo "$outputv2" | grep "$8" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 | sed -n 1p >> testes/"$8"/tables/v2_op1_"$1".dat
+ echo -ne "$3 " >> testes/"$1"/tables/v2_op2_"$1".dat
+ echo "$outputv2" | grep "$8" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 | sed -n 2p >> testes/"$8"/tables/v2_op2_"$1".dat
 
  echo
  echo "$outputv1" | grep "$2" | grep -v "AVX" | tr -s ' ' | cut -d ' ' -f $4 
@@ -48,14 +48,14 @@ generate_table()
     echo "$tempov1"
     echo "$tempov2"
 
-    echo -ne "$3 " >> tables/v1_op1_tempo.dat
-    echo "$tempov1" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 1p >> tables/v1_op1_tempo.dat
-    echo -ne "$3 " >> tables/v1_op2_tempo.dat
-    echo "$tempov1" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p >> tables/v1_op2_tempo.dat
-    echo -ne "$3 " >> tables/v2_op1_tempo.dat
-    echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 1p >> tables/v2_op1_tempo.dat
-    echo -ne "$3 "  >> tables/v2_op2_tempo.dat
-    echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p >> tables/v2_op2_tempo.dat
+    echo -ne "$3 " >> testes/"$8"/tables/v1_op1_tempo.dat
+    echo "$tempov1" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 1p >> testes/"$8"/tables/v1_op1_tempo.dat
+    echo -ne "$3 " >> testes/"$8"/tables/v1_op2_tempo.dat
+    echo "$tempov1" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p >> testes/"$8"/tables/v1_op2_tempo.dat
+    echo -ne "$3 " >> testes/"$8"/tables/v2_op1_tempo.dat
+    echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 1p >> testes/"$8"/tables/v2_op1_tempo.dat
+    echo -ne "$3 "  >> testes/"$8"/tables/v2_op2_tempo.dat
+    echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p >> testes/"$8"/tables/v2_op2_tempo.dat
 
 
  echo -ne "$3 "
@@ -98,8 +98,12 @@ echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p
 #rm tables/*.dat
 
 # groups=(60 120)
-groups=(60)
+makedir testes/"$1"
+mkdir testes/"$1"/output
+mkdir testes/"$1"/tables
 
+
+groups=(60)
 eval "export PATH=/home/soft/likwid/bin:/home/soft/likwid/sbin:$PATH"
 eval "export LD_LIBRARY_PATH=/home/soft/likwid/lib:$LD_LIBRARY_PATH"
 
@@ -107,13 +111,13 @@ eval "export LD_LIBRARY_PATH=/home/soft/likwid/lib:$LD_LIBRARY_PATH"
 for i in "${groups[@]}"
  do
     # echo $i
-    cg_solver_v1="./ver/0.1_original/cgSolver -i 400 -n $i -k 3 -o output/v1_$i.txt -p .5"
-    cg_solver_v2="./cgSolver -i 400 -n $i -k 3 -o output/v2_$i.txt -p .5"
-    generate_table L2CACHE "miss rate" $i 6 "$cg_solver_v1" "$cg_solver_v2" 1
-    #generate_table "L3" "L3 bandwidth" $i 6 "$cg_solver_v1" "$cg_solver_v2" 0
-    #generate_table FLOPS_DP "DP MFLOP/s" $i 5 "$cg_solver_v1" "$cg_solver_v2" 0
+    cg_solver_v1="./ver/0.1_original/cgSolver -i 400 -n $i -k 3 -o testes/$1/output/v1_$i.txt -p .5"
+    cg_solver_v2="./cgSolver -i 400 -n $i -k 3 -o testes/$1/output/v2_$i.txt -p .5"
+    generate_table L2CACHE "miss rate" $i 6 "$cg_solver_v1" "$cg_solver_v2" 1 "$1"
+    generate_table "L3" "L3 bandwidth" $i 6 "$cg_solver_v1" "$cg_solver_v2" 0 "$1"
+    generate_table FLOPS_DP "DP MFLOP/s" $i 5 "$cg_solver_v1" "$cg_solver_v2" 0 "$1"
  done
 
 #   generate_table L2CACHE "L2 miss rate" $i 6
 #   generate_table "L3" "L3 bandwidth" $i 6
-#   generate_table FLOPS_DP "DP MFLOP/s" $i 5   generate_table FLOPS_DP "DP MFLOP/s" $i 5
+#   generate_table FLOPS_DP "DP MFLOP/s" $i 5   generate_table FLOPS_DP "DP MFLOP/s" $i 5:uu
