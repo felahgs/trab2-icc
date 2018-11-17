@@ -26,14 +26,14 @@ generate_table()
  #echo "$outputv2" | grep "$2" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 | sed -n 3p >> tables/v2-op1_"$1".dat
  #echo "$outputv2" | grep "$2" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 | sed -n 4p >> tables/v2-op2_"$1".dat
 
- echo -ne "$3 " >> testes/$1/tables/v1_op1_"$1".dat
- echo "$outputv1" | grep "$2" | grep -v "AVX" | tr -s ' ' | cut -d ' ' -f $4 | sed -n 1p >> testes/$1/tables/v1_op1_"$1".dat
- echo -ne "$3 " >> testes/$1/tables/v1_op2_"$1".dat
- echo "$outputv1" | grep "$2" | grep -v "AVX" | tr -s ' ' | cut -d ' ' -f $4 | sed -n 2p >> testes/$1/tables/v1_op2_"$1".dat
- echo -ne "$3 " >> testes/$1/tables/v2_op1_"$1".dat
- echo "$outputv2" | grep "$2" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 | sed -n 1p >> testes/$1/tables/v2_op1_"$1".dat
- echo -ne "$3 " >> testes/$1/tables/v2_op2_"$1".dat
- echo "$outputv2" | grep "$2" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 | sed -n 2p >> testes/$1/tables/v2_op2_"$1".dat
+ echo -ne "$3 " >> testes/"$1"/tables/v1_op1_"$1".dat
+ echo "$outputv1" | grep "$2" | grep -v "AVX" | tr -s ' ' | cut -d ' ' -f $4 | sed -n 1p >> testes/"$1"/tables/v1_op1_"$1".dat
+ echo -ne "$3 " >> testes/"$1"/tables/v1_op2_"$1".dat
+ echo "$outputv1" | grep "$2" | grep -v "AVX" | tr -s ' ' | cut -d ' ' -f $4 | sed -n 2p >> testes/"$1"/tables/v1_op2_"$1".dat
+ echo -ne "$3 " >> testes/"$1"/tables/v2_op1_"$1".dat
+ echo "$outputv2" | grep "$2" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 | sed -n 1p >> testes/"$1"/tables/v2_op1_"$1".dat
+ echo -ne "$3 " >> testes/"$1"/tables/v2_op2_"$1".dat
+ echo "$outputv2" | grep "$2" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 | sed -n 2p >> testes/"$1"/tables/v2_op2_"$1".dat
 
  echo
  echo "$outputv1" | grep "$2" | grep -v "AVX" | tr -s ' ' | cut -d ' ' -f $4 
@@ -48,14 +48,14 @@ generate_table()
     echo "$tempov1"
     echo "$tempov2"
 
-    echo -ne "$3 " >> testes/$1/tables/v1_op1_tempo.dat
-    echo "$tempov1" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 1p >> testes/$1/tables/v1_op1_tempo.dat
-    echo -ne "$3 " >> testes/$1/tables/v1_op2_tempo.dat
-    echo "$tempov1" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p >> testes/$1/tables/v1_op2_tempo.dat
-    echo -ne "$3 " >> testes/$1/tables/v2_op1_tempo.dat
-    echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 1p >> testes/$1/tables/v2_op1_tempo.dat
-    echo -ne "$3 "  >> testes/$1/tables/v2_op2_tempo.dat
-    echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p >> testes/$1/tables/v2_op2_tempo.dat
+    echo -ne "$3 " >> testes/"$1"/tables/v1_op1_tempo.dat
+    echo "$tempov1" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 1p >> testes/"$1"/tables/v1_op1_tempo.dat
+    echo -ne "$3 " >> testes/"$1"/tables/v1_op2_tempo.dat
+    echo "$tempov1" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p >> testes/"$1"/tables/v1_op2_tempo.dat
+    echo -ne "$3 " >> testes/"$1"/tables/v2_op1_tempo.dat
+    echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 1p >> testes/"$1"/tables/v2_op1_tempo.dat
+    echo -ne "$3 "  >> testes/"$1"/tables/v2_op2_tempo.dat
+    echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p >> testes/"$1"/tables/v2_op2_tempo.dat
 
 
  echo -ne "$3 "
@@ -98,7 +98,6 @@ echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p
 #rm tables/*.dat
 
 # groups=(60 120)
-makedir testes
 makedir testes/$1
 groups=(60)
 
