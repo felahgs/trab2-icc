@@ -1,4 +1,5 @@
 
+
 #//www.ibm.com/developerworks/aix/library/au-gnuplot/
 # Script para teste de desenpenho das funções de multiplicação de matriz de matmult
 
@@ -18,7 +19,9 @@ generate_table()
  #echo "v1" "$1"
  #evol "$likwid" "$cg_solver_v1"
 
+ echo Resolvendo "$1" de tamanho "$3" para versao antiga
  outputv1="$(eval "$likwid" "$cg_solver_v1")"
+ echo Resolvendo "$1" de tamanho "$3" para versao nova
  outputv2="$(eval "$likwid" "$cg_solver_v2")"
 
 # echo "$outputv1" | grep "$2" | grep -v "AVX" | tr -s ' ' | cut -d ' ' -f $4 | sed -n 1p >> tables/v1-op1_"$1".dat
@@ -36,17 +39,17 @@ generate_table()
  echo "$outputv2" | grep "$2" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 | sed -n 2p >> tables/v2_op2_"$1".dat
 
  echo
- echo "$outputv1" | grep "$2" | grep -v "AVX" | tr -s ' ' | cut -d ' ' -f $4 
- echo "$outputv2" | grep "$2" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 
+ #echo "$outputv1" | grep "$2" | grep -v "AVX" | tr -s ' ' | cut -d ' ' -f $4 
+ #echo "$outputv2" | grep "$2" | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4 
 
  tempov1=$(echo "$outputv1" | grep Tempo)
  tempov2=$(echo "$outputv2" | grep Tempo)
 
  if [ $7 = 1 ]
  then
-    echo "Foo and Bar are equal"
-    echo "$tempov1"
-    echo "$tempov2"
+    
+    #echo "$tempov1"
+    #echo "$tempov2"
 
     echo -ne "$3 " >> tables/v1_op1_tempo.dat
     echo "$tempov1" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 1p >> tables/v1_op1_tempo.dat
@@ -58,14 +61,14 @@ generate_table()
     echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p >> tables/v2_op2_tempo.dat
 
 
- echo -ne "$3 "
-echo "$tempov1" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 1p
-echo -ne "$3 " 
-echo "$tempov1" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p
-echo -ne "$3 " 
-echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 1p
-echo -ne "$3 "  
-echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p 
+# echo -ne "$3 "
+#echo "$tempov1" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 1p
+#echo -ne "$3 " 
+#echo "$tempov1" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p
+#echo -ne "$3 " 
+#echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 1p
+#echo -ne "$3 "  
+#echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p 
 
  fi
  # tr -s ' '       --- comprimir todos os empaçamentos em apenas um character
@@ -98,7 +101,7 @@ echo "$tempov2" | tr -s ' ' | cut -d ' ' -f 4 | sed -n 2p
 #rm tables/*.dat
 
 # groups=(60 120)
-groups=(60)
+groups=(32 64 128 256 512 1000 2000 4000 8000)
 
 eval "export PATH=/home/soft/likwid/bin:/home/soft/likwid/sbin:$PATH"
 eval "export LD_LIBRARY_PATH=/home/soft/likwid/lib:$LD_LIBRARY_PATH"
@@ -107,11 +110,11 @@ eval "export LD_LIBRARY_PATH=/home/soft/likwid/lib:$LD_LIBRARY_PATH"
 for i in "${groups[@]}"
  do
     # echo $i
-    cg_solver_v1="./ver/0.1_original/cgSolver -i 400 -n $i -k 3 -o output/v1_$i.txt -p .5"
-    cg_solver_v2="./cgSolver -i 400 -n $i -k 3 -o output/v2_$i.txt -p .5"
+    cg_solver_v1="./ver/0.1_original/cgSolver -i 10 -n $i -k 7 -o output/v1_$i.txt -p .5"
+    cg_solver_v2="./cgSolver -i 10 -n $i -k 7 -o output/v2_$i.txt -p .5"
     generate_table L2CACHE "miss rate" $i 6 "$cg_solver_v1" "$cg_solver_v2" 1
-    #generate_table "L3" "L3 bandwidth" $i 6 "$cg_solver_v1" "$cg_solver_v2" 0
-    #generate_table FLOPS_DP "DP MFLOP/s" $i 5 "$cg_solver_v1" "$cg_solver_v2" 0
+    generate_table "L3" "L3 bandwidth" $i 6 "$cg_solver_v1" "$cg_solver_v2" 0
+    generate_table FLOPS_DP "DP MFLOP/s" $i 5 "$cg_solver_v1" "$cg_solver_v2" 0
  done
 
 #   generate_table L2CACHE "L2 miss rate" $i 6

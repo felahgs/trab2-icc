@@ -529,15 +529,6 @@ double *preconditioningCg(double *A, double *B, double *M, unsigned int n,
       
       
       Z = multiplyMatrix(A, n, n, V, n, 1); // z = A*v
-            prnMat(A,n); 
-       prnArr(V,n); 
-       prnArr(Z,n);
-  // prnArr(Z,n);
-  // prnArr(V,n);
-  // prnMat(A,n);
-  // prnArr(V,n);
-  // prnMat(M,n);
-  // exit(0);
       
       free(R1);
       R1 = multiplyMatrix(V, 1, n, Z, n, 1); //(vT * z)
@@ -562,7 +553,12 @@ double *preconditioningCg(double *A, double *B, double *M, unsigned int n,
       fprintf(fp, "# iter %d: %.15g\n",  it, *R2);
 
       if (*R2 < eps) {
+        LIKWID_MARKER_START("op2");
+
         double r = calculateNorm(A,B,Xn,n,&timeNorm);
+
+      LIKWID_MARKER_STOP("op2");
+
         
         fprintf(fp, "# Residuo: %.15g \n", r);
         fprintf(fp, "# Tempo PC: %.15g sec \n", (timePC / 1000));
@@ -593,9 +589,9 @@ double *preconditioningCg(double *A, double *B, double *M, unsigned int n,
       itTotal = itTotal + (timestamp() - timeIt);
   }
     /*******************************************************************/
-   	LIKWID_MARKER_START("op2");
+    LIKWID_MARKER_START("op2");
         double r = calculateNorm(A,B,Xn,n,&timeNorm);
-	LIKWID_MARKER_STOP("op2");
+    LIKWID_MARKER_STOP("op2");
     
  
     fprintf(fp, "# Residuo: %.15g \n", r);
@@ -611,5 +607,5 @@ double *preconditioningCg(double *A, double *B, double *M, unsigned int n,
     
     fprintf(fp, "\nErro! Sistema não converge!\n");
     fprintf(stderr, "Erro! Sistema não converge!\n");   
-    exit(1);
+    //exit(1);
 }
