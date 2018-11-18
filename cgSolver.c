@@ -77,15 +77,7 @@ int main (int argc, char *argv[])
     }
     else if (p > 0 && p < 1) {
         printf("Gradientes Conjugados com Precondicionador de Jacobi\n");
-
-	   LIKWID_MARKER_INIT;
-        LIKWID_MARKER_START("op1");
-
         preconditioningCg(matrixA, b, matrixC, n, i, e, fp);
-
-        LIKWID_MARKER_STOP("op1");
-        LIKWID_MARKER_CLOSE;
-
     }
     else {
         fprintf(stderr, "Codigo de pre-condicionador incorreto ou ausente! "

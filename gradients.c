@@ -63,6 +63,10 @@ double *conjugateGradients(double *A, double *B, unsigned int n,
   /*******************************************************************/
   
  /************************ Iteration *******************************/
+           LIKWID_MARKER_INIT;
+        LIKWID_MARKER_START("op1");
+
+
   for (int k = 0; k < maxIt; k++) {
       timeIt = timestamp();
       it++;
@@ -169,6 +173,9 @@ double *preconditioningCg(double *A, double *B, double *M, unsigned int n,
   for (int k = 0; k < maxIt; k++) {
     timeIt = timestamp();
       it++;
+     
+     	   LIKWID_MARKER_INIT;
+        LIKWID_MARKER_START("op1"); 
       
       Z = multiplyMatrix(A, n, n, V, n, 1); // z = A*v
       
@@ -239,7 +246,8 @@ double *preconditioningCg(double *A, double *B, double *M, unsigned int n,
       fprintf(fp, "\nErro! Sistema não converge!\n");
       fprintf(stderr, "Erro! Sistema não converge!\n");
     }
-
+    LIKWID_MARKER_STOP("op1");
+    LIKWID_MARKER_CLOSE;
     return Xn; // Saída com  sol  =  x{k+l )
     // exit(1);
 }

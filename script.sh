@@ -9,7 +9,7 @@
 generate_table()
 {
  
- likwid="likwid-perfctr -C 1 -g $1 -m -f" 
+ likwid="likwid-perfctr -C 3 -g $1 -m -f" 
  filter="grep '$2' | grep -v 'AVX' | tr -s ' ' | cut -d ' ' -f $4"
  cg_solver_v1="$5"
  cg_solver_v2="$6"
@@ -101,7 +101,7 @@ generate_table()
 #rm tables/*.dat
 
 # groups=(60 120)
-groups=(32 64 128 256 512 1000 2000 4000 8000)
+groups=(32 64 128 256 512 1000 2000)
 
 eval "export PATH=/home/soft/likwid/bin:/home/soft/likwid/sbin:$PATH"
 eval "export LD_LIBRARY_PATH=/home/soft/likwid/lib:$LD_LIBRARY_PATH"
